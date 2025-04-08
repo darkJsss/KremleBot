@@ -944,3 +944,86 @@ input, textarea {
     -webkit-user-select: text;
     user-select: text;
 }
+
+/* Базовые настройки для телеграмм-браузера */
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Контейнер теста */
+.mobile-test-container {
+    width: 100vw;
+    min-height: 100vh;
+    box-sizing: border-box;
+    padding: 10px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Карточки с темами (в tests.html) */
+.tests-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    width: calc(100% - 20px);
+    margin: 0 auto;
+    padding-bottom: 15px;
+}
+
+.test-card {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 18px 15px;
+    border-radius: 12px;
+}
+
+/* Кнопки и иконки */
+.test-top-bar {
+    width: calc(100% - 20px);
+    margin: 0 auto;
+    max-width: 100%;
+}
+
+/* Варианты ответов */
+.option-container {
+    width: calc(100% - 30px);
+    margin: 0 auto;
+}
+
+/* Особые настройки для встроенного браузера Telegram */
+@media (max-width: 400px) {
+    .question-text {
+        font-size: 16px;
+        line-height: 1.3;
+    }
+
+    .option-text {
+        font-size: 14px;
+    }
+
+    .test-card h3 {
+        font-size: 16px;
+    }
+
+    .test-card p {
+        font-size: 13px;
+    }
+}
+
+/* Фикс для очень маленьких экранов */
+@media (max-height: 600px) and (max-width: 400px) {
+    .mobile-test-container {
+        padding: 5px;
+    }
+
+    .question-block {
+        padding: 12px;
+    }
+
+    .option-container {
+        padding: 10px 12px;
+    }
+}
