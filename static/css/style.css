@@ -1027,3 +1027,73 @@ html, body {
         padding: 10px 12px;
     }
 }
+
+
+.mobile-tests-container {
+    width: 100%;
+    padding: 15px 10px;
+    box-sizing: border-box;
+}
+
+.tests-title {
+    font-size: 22px;
+    text-align: center;
+    margin-bottom: 20px;
+    color: #ff4500;
+    padding: 0 10px;
+}
+
+.tests-scroll-wrapper {
+    width: 100%;
+    overflow: hidden;
+}
+
+.test-card {
+    background: linear-gradient(135deg, #ff8c00, #ff4500);
+    color: white;
+    text-decoration: none;
+    display: block;
+    margin-bottom: 10px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+}
+
+.card-content {
+    position: relative;
+    z-index: 2;
+}
+
+.card-content h3 {
+    font-size: 18px;
+    margin-bottom: 5px;
+}
+
+.card-content p {
+    font-size: 14px;
+    opacity: 0.9;
+    margin-bottom: 0;
+}
+
+.card-icon {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 40px;
+    opacity: 0.2;
+}
+
+.submit-btn {
+    width: 90%;
+    max-width: 300px;
+    margin: 10px auto;
+}
+
+:root {
+    --safe-area: env(safe-area-inset-bottom, 0px);
+}
+
+body {
+    padding-bottom: calc(20px + var(--safe-area));
+}
