@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, session
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import select
 from datetime import datetime, timedelta
+from sqlalchemy import text  # Добавьте в начале файла
 import random
 import os
 
@@ -57,6 +58,16 @@ class TestResult(db.Model):
     score = db.Column(db.Integer, nullable=False)
     time = db.Column(db.String(10), nullable=False)
     user = db.relationship('User', back_populates='test_results')
+
+class UserRating(db.Model):
+    __tablename__ = 'user_ratings'
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    total_score = db.Column(db.Integer, default=0)
+    tests_completed = db.Column(db.Integer, default=0)
+    last_activity = db.Column(db.DateTime, default=datetime.utcnow)
+
+    user = db.relationship('User', backref=db.backref('rating', uselist=False))
 
 
 # Создание таблиц
@@ -160,6 +171,65 @@ def history_item(topic):
         return redirect(url_for('history'))
 
 
+@app.route('/rating')
+def rating():
+    # Получаем топ-10 пользователей
+    top_users = db.session.execute(
+        select(User, UserRating)
+        .join(UserRating)
+        .order_by(UserRating.total_score.desc())
+        .limit(10)
+    ).all()
+
+    # Получаем текущего пользователя и его позицию
+    current_user_rank = None
+    if 'user_id' in session:
+        user_id = session['user_id']
+        current_user = db.session.get(User, user_id)
+
+        if current_user and current_user.rating:
+            # Получаем позицию пользователя в рейтинге
+            rank_query = """
+                SELECT rank FROM (
+                    SELECT 
+                        user_id, 
+                        total_score,
+                        RANK() OVER (ORDER BY total_score DESC) as rank
+                    FROM user_ratings
+                ) ranked WHERE user_id = :user_id
+            """
+            current_user_rank = db.session.execute(
+                text(rank_query), {'user_id': user_id}
+            ).scalar()
+
+    return render_template('rating.html',
+                           top_users=top_users,
+                           current_user_rank=current_user_rank)
+
+
+# Обновляем рейтинг после завершения теста (добавьте в test_result)
+def update_rating(user_id, score):
+    with db.session.begin():
+        # Получаем или создаем рейтинг
+        rating = db.session.execute(
+            select(UserRating)
+            .where(UserRating.user_id == user_id)
+        ).scalar_one_or_none()
+
+        if not rating:
+            rating = UserRating(
+                user_id=user_id,
+                total_score=0,
+                tests_completed=0
+            )
+            db.session.add(rating)
+
+        # Обновляем значения (гарантируем, что не None)
+        rating.total_score = (rating.total_score or 0) + score
+        rating.tests_completed = (rating.tests_completed or 0) + 1
+        rating.last_activity = datetime.utcnow()
+
+
 @app.route('/tests')
 def tests():
     return render_template('tests.html')
@@ -243,42 +313,25 @@ def test_result():
     test_data = session['test_data']
 
     # Подсчет правильных ответов
-    correct = sum(1 for i, answer in enumerate(test_data['answers'])
-                  if answer == test_data['questions'][i]['correct'])
-
+    correct = sum(
+        1 for i, answer in enumerate(test_data['answers'])
+        if i < len(test_data['questions']) and
+        answer == test_data['questions'][i]['correct']
+    )
+    is_new_record = False
     # Расчет времени
     elapsed = (datetime.now() - datetime.fromisoformat(test_data['start_time'])).total_seconds()
     elapsed_time = str(timedelta(seconds=int(elapsed)))[2:]  # MM:SS
 
-    # Сохранение результатов
-    is_new_record = False
+    # Обновление рейтинга
     if 'user_id' in session:
-        user = db.session.get(User, session['user_id'])
-        if user:
-            stmt = select(TestResult).where(
-                (TestResult.user_id == user.id) &
-                (TestResult.topic == test_data['topic'])
-            )
-            existing_result = db.session.execute(stmt).scalar_one_or_none()
+        try:
+            update_rating(session['user_id'], correct * 1)  # 10 очков за правильный ответ
+        except Exception as e:
+            print(f"Error updating rating: {e}")
+            # Продолжаем даже если ошибка обновления рейтинга
 
-            if existing_result:
-                if correct > existing_result.score:
-                    existing_result.score = correct
-                    existing_result.time = elapsed_time
-                    is_new_record = True
-            else:
-                new_result = TestResult(
-                    user_id=user.id,
-                    topic=test_data['topic'],
-                    score=correct,
-                    time=elapsed_time
-                )
-                db.session.add(new_result)
-                is_new_record = True
-
-            db.session.commit()
-
-    # Очистка сессии
+    # Очистка сессии теста
     session.pop('test_data', None)
 
     return render_template('test_result.html',
@@ -305,6 +358,10 @@ def profile():
         return render_template('profile_setup.html')
 
     user = db.session.get(User, session['user_id'])
+    # Проверяем наличие рейтинга
+    if not user.rating:
+        user.rating = UserRating(total_score=0, tests_completed=0)
+        db.session.commit()
 
     # Получение всех результатов пользователя
     stmt = select(TestResult).where(TestResult.user_id == user.id)

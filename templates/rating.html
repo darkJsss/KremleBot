@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="rating-container">
+    <div class="rating-header">
+        <a href="{{ url_for('index') }}" class="back-button">
+            <img src="{{ url_for('static', filename='images/back.png') }}" alt="Назад">
+        </a>
+        <h1>Рейтинг игроков</h1>
+    </div>
+
+    <div class="rating-tabs">
+        <button class="tab-button active">Общий рейтинг</button>
+        <button class="tab-button">По темам</button>
+    </div>
+
+    <div class="leaderboard">
+        {% for user, rating in top_users %}
+        <div class="leaderboard-item {% if 'user_id' in session and user.id == session['user_id'] %}current-user{% endif %}">
+            <div class="rank">{{ loop.index }}</div>
+            <div class="user-info">
+                <div class="username">{{ user.username }}</div>
+                <div class="stats">
+                    <span class="score">{{ rating.total_score }} очков</span>
+                    <span class="tests">{{ rating.tests_completed }} тестов</span>
+                </div>
+            </div>
+            <div class="badge">
+                {% if loop.index == 1 %}👑
+                {% elif loop.index == 2 %}🥈
+                {% elif loop.index == 3 %}🥉
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    {% if current_user_rank %}
+    <div class="user-position">
+        Ваше место в рейтинге: <strong>#{{ current_user_rank }}</strong>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
