@@ -1,42 +1,60 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="profile-container">
-    <a href="{{ url_for('index') }}" class="back-button">
-        <img src="{{ url_for('static', filename='images/back.png') }}" alt="Назад">
-    </a>
-    <h1>Профиль {{ username }}</h1>
-
-    <div class="results-section">
-        <h2>Ваши Результаты:</h2>
-        <div class="results-grid">
-            {% for result in results %}
-            <div class="result-item">
-                <h3>{{ result.topic }}</h3>
-                <p>{{ result.score }}/15 ({{ result.time }})</p>
-            </div>
-            {% endfor %}
-        </div>
+<div class="mobile-profile-container">
+    <!-- Шапка профиля -->
+    <div class="profile-header">
+        <a href="{{ url_for('index') }}" class="back-button">
+            <img src="{{ url_for('static', filename='images/back.png') }}" alt="Назад">
+        </a>
+        <h1 class="profile-title">Профиль {{ username }}</h1>
     </div>
 
-    <div class="achievements-section">
-        <h2>Достижения</h2>
-        <div class="achievements-grid">
-            {% for achievement in achievements %}
-            <div class="achievement-item {% if not achievement.unlocked %}locked{% endif %}">
-                <div class="achievement-icon">
+    <!-- Основная информация -->
+    <div class="profile-info">
+        <div class="info-card">
+            <h2>Ваши результаты</h2>
+
+            <div class="results-grid">
+                {% for result in results %}
+                <div class="result-item">
+                    <div class="result-topic">{{ result.topic }}</div>
+                    <div class="result-score">
+                        <span class="score-value">{{ result.score }}/15</span>
+                        <span class="time-value">{{ result.time }}</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: {{ (result.score / 15) * 100 }}%"></div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Достижения -->
+        <div class="achievements-card">
+            <h2>Достижения</h2>
+
+            <div class="achievements-grid">
+                {% for achievement in achievements %}
+                <div class="achievement-item {% if not achievement.unlocked %}locked{% endif %}">
+                    <div class="achievement-icon">
+                        {% if achievement.unlocked %}
+                        {{ achievement.icon }}
+                        {% else %}
+                        🔒
+                        {% endif %}
+                    </div>
+                    <div class="achievement-info">
+                        <h3>{{ achievement.title }}</h3>
+                        <p>{{ achievement.description }}</p>
+                    </div>
                     {% if achievement.unlocked %}
-                    <span>{{ achievement.icon }}</span>
-                    {% else %}
-                    <span>🔒</span>
+                    <div class="achievement-badge">✔️</div>
                     {% endif %}
                 </div>
-                <div class="achievement-info">
-                    <h3>{{ achievement.title }}</h3>
-                    <p>{{ achievement.description }}</p>
-                </div>
+                {% endfor %}
             </div>
-            {% endfor %}
         </div>
     </div>
 </div>

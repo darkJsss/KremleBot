@@ -1138,3 +1138,242 @@ body {
     text-decoration: none;
     box-shadow: 0 3px 6px rgba(0,0,0,0.1);
 }
+
+/* ===== Общие стили для мобильных ===== */
+.mobile-history-container,
+.mobile-profile-container {
+    width: 100vw;
+    min-height: 100vh;
+    padding: 15px 10px;
+    box-sizing: border-box;
+    overflow-x: hidden;
+}
+
+/* Шапка с кнопкой назад */
+.history-header,
+.profile-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.back-button {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 15px;
+}
+
+.back-button img {
+    width: 24px;
+    height: 24px;
+}
+
+.history-title,
+.profile-title {
+    font-size: 22px;
+    color: #ff4500;
+    margin: 0;
+    flex-grow: 1;
+}
+
+/* ===== Стили для history.html ===== */
+.history-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    width: 100%;
+}
+
+.history-card-wrapper {
+    width: 100%;
+    padding: 5px;
+    box-sizing: border-box;
+}
+
+.history-card {
+    display: block;
+    background: white;
+    border-radius: 12px;
+    padding: 18px;
+    text-decoration: none;
+    color: #333;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+    position: relative;
+    overflow: hidden;
+    border: 1px solid #eee;
+}
+
+.history-card h3 {
+    font-size: 18px;
+    margin: 0 0 5px 0;
+    width: 80%;
+}
+
+.card-icon {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 40px;
+    opacity: 0.1;
+}
+
+.card-badge {
+    position: absolute;
+    right: 15px;
+    bottom: 15px;
+    background: #ff8c00;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 12px;
+}
+
+/* ===== Стили для profile.html ===== */
+.profile-info {
+    width: 100%;
+}
+
+.info-card,
+.achievements-card {
+    background: white;
+    border-radius: 12px;
+    padding: 15px;
+    margin-bottom: 20px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+}
+
+.info-card h2,
+.achievements-card h2 {
+    font-size: 18px;
+    color: #ff4500;
+    margin-top: 0;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.results-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+}
+
+.result-item {
+    display: flex;
+    flex-direction: column;
+    padding: 10px 0;
+    border-bottom: 1px dashed #eee;
+}
+
+.result-item:last-child {
+    border-bottom: none;
+}
+
+.result-topic {
+    font-weight: bold;
+    margin-bottom: 5px;
+    font-size: 15px;
+}
+
+.result-score {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+.score-value {
+    color: #ff4500;
+    font-weight: bold;
+}
+
+.time-value {
+    color: #666;
+}
+
+.progress-bar {
+    height: 5px;
+    background: #f0f0f0;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(to right, #ff8c00, #ff4500);
+    border-radius: 3px;
+}
+
+/* Достижения */
+.achievements-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+}
+
+.achievement-item {
+    display: flex;
+    align-items: center;
+    padding: 12px;
+    background: #f9f9f9;
+    border-radius: 10px;
+    position: relative;
+}
+
+.achievement-item.locked {
+    opacity: 0.7;
+    background: #f0f0f0;
+}
+
+.achievement-icon {
+    font-size: 24px;
+    margin-right: 15px;
+    width: 40px;
+    text-align: center;
+}
+
+.achievement-info {
+    flex-grow: 1;
+}
+
+.achievement-info h3 {
+    font-size: 15px;
+    margin: 0 0 3px 0;
+    color: #333;
+}
+
+.achievement-info p {
+    font-size: 13px;
+    margin: 0;
+    color: #666;
+}
+
+.achievement-badge {
+    color: #4CAF50;
+    font-size: 20px;
+    margin-left: 10px;
+}
+
+/* ===== Адаптация для очень маленьких экранов ===== */
+@media (max-width: 350px) {
+    .history-card h3 {
+        font-size: 16px;
+    }
+
+    .result-topic {
+        font-size: 14px;
+    }
+
+    .achievement-info h3 {
+        font-size: 14px;
+    }
+
+    .achievement-info p {
+        font-size: 12px;
+    }
+}

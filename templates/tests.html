@@ -2,8 +2,10 @@
 
 {% block content %}
 <div class="mobile-tests-container">
+    <a href="{{ url_for('index') }}" class="back-button">
+        <img src="{{ url_for('static', filename='images/back.png') }}" alt="Назад">
+    </a>
     <h1 class="tests-title">Тестирования</h1>
-
     <div class="tests-grid">
         {% for topic in ['Битва за Москву', 'Блокада Ленинграда', 'Сталинградская Битва', 'Курская Битва'] %}
         <div class="test-card-wrapper">
