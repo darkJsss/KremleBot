@@ -165,9 +165,29 @@ def history_item(topic):
         filename = THEORY_FILES[topic]
         with open(f'theory/{filename}', 'r', encoding='utf-8') as f:
             content = f.read()
-        return render_template('history_item.html', topic=topic, content=content)
+
+            # Обработка абзацев
+            paragraphs = [p.strip() for p in content.split('\n\n') if p.strip()]
+            formatted_content = ""
+
+            for p in paragraphs:
+                # Сохраняем подзаголовки (строки с :)
+                if ':' in p and len(p.split(':')[0]) < 30:
+                    title, text = p.split(':', 1)
+                    formatted_content += f"""
+                    <div class="theory-block">
+                        <h3 class="theory-title">{title.strip()}:</h3>
+                        <p class="theory-text">{text.strip()}</p>
+                    </div>
+                    """
+                else:
+                    formatted_content += f'<p class="theory-text">{p}</p>'
+
+        return render_template('history_item.html',
+                               topic=topic,
+                               content=formatted_content)
     except Exception as e:
-        print(f"Error loading history item: {e}")
+        print(f"Error loading theory: {e}")
         return redirect(url_for('history'))
 
 

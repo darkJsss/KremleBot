@@ -1,32 +1,26 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="event-container">
+<div class="theory-container">
     <a href="{{ url_for('history') }}" class="back-button">
         <img src="{{ url_for('static', filename='images/back.png') }}" alt="Назад">
     </a>
 
-    <h1 class="event-title">{{ topic }}</h1>
+    <h1 class="theory-heading">{{ topic }}</h1>
 
-    <div class="event-content" id="content-container">
+    <div class="theory-content">
         {{ content|safe }}
     </div>
 
-    <div class="scroll-buttons">
-        <button id="scroll-up" class="scroll-button">↑</button>
-        <button id="scroll-down" class="scroll-button">↓</button>
+    <div class="theory-navigation">
+        <button id="scroll-up" class="nav-button">↑ Наверх</button>
     </div>
 </div>
 
 <script>
-    document.getElementById('scroll-up').addEventListener('click', function() {
-        const container = document.getElementById('content-container');
-        container.scrollBy(0, -100);
-    });
-
-    document.getElementById('scroll-down').addEventListener('click', function() {
-        const container = document.getElementById('content-container');
-        container.scrollBy(0, 100);
+    // Плавная прокрутка вверх
+    document.getElementById('scroll-up').addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     });
 </script>
 {% endblock %}
