@@ -2,8 +2,14 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>КремлеБот</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>{% block title %}{% endblock %}</title>
+    <style>
+        :root {
+            --vh: 1vh; /* Будет переопределено в JS */
+            --safe-area: env(safe-area-inset-bottom, 0px);
+        }
+    </style>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
@@ -11,5 +17,32 @@
     <div class="container">
         {% block content %}{% endblock %}
     </div>
+    <!-- Код для адаптации под Telegram и мобильные устройства -->
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Фиксим viewport для Telegram
+        function adjustViewport() {
+            const metaViewport = document.querySelector('meta[name="viewport"]');
+            const isTelegram = navigator.userAgent.includes('Telegram');
+            if (isTelegram) {
+                metaViewport.content = 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no';
+            }
+            // Корректировка высоты
+            const vh = window.innerHeight * 0.01;
+            document.documentElement.style.setProperty('--vh', `${vh}px`);
+
+            // Проверка выхода за границы
+            document.querySelectorAll('.test-card, .option-container').forEach(el => {
+                if (el.offsetLeft + el.offsetWidth > window.innerWidth) {
+                    el.style.width = (window.innerWidth - 30) + 'px';
+                }
+            });
+        }
+        // Вызываем при загрузке и изменении размера
+        window.addEventListener('load', adjustViewport);
+        window.addEventListener('resize', adjustViewport);
+        adjustViewport(); // Инициализация
+    });
+    </script>
 </body>
 </html>

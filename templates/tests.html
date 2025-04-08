@@ -4,18 +4,15 @@
 <div class="mobile-tests-container">
     <h1 class="tests-title">Тестирования</h1>
 
-    <div class="tests-scroll-wrapper">
-        <div class="tests-grid">
-            {% for topic in ['Битва за Москву', 'Блокада Ленинграда', 'Сталинградская Битва', 'Курская Битва'] %}
+    <div class="tests-grid">
+        {% for topic in ['Битва за Москву', 'Блокада Ленинграда', 'Сталинградская Битва', 'Курская Битва'] %}
+        <div class="test-card-wrapper">
             <a href="{{ url_for('test_confirmation', topic=topic) }}" class="test-card">
-                <div class="card-content">
-                    <h3>{{ topic }}</h3>
-                    <p>15 вопросов • 5 минут</p>
-                    <div class="card-icon">📝</div>
-                </div>
+                <h3>{{ topic }}</h3>
+                <p>15 вопросов • 5 минут</p>
             </a>
-            {% endfor %}
         </div>
+        {% endfor %}
     </div>
 </div>
 {% endblock %}
