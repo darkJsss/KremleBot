@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="history-container">
+    <a href="{{ url_for('index') }}" class="back-button">
+        <img src="{{ url_for('static', filename='images/back.png') }}" alt="Назад">
+    </a>
+    <h1 class="history-title">История</h1>
+
+    <div class="history-grid">
+        <a href="{{ url_for('history_item', topic='Битва за Москву') }}" class="history-card">
+            <div class="card-content">
+                <h3>Битва за Москву</h3>
+            </div>
+        </a>
+
+        <a href="{{ url_for('history_item', topic='Блокада Ленинграда') }}" class="history-card">
+            <div class="card-content">
+                <h3>Блокада Ленинграда</h3>
+            </div>
+        </a>
+
+        <a href="{{ url_for('history_item', topic='Сталинградская Битва') }}" class="history-card">
+            <div class="card-content">
+                <h3>Сталинградская Битва</h3>
+            </div>
+        </a>
+
+        <a href="{{ url_for('history_item', topic='Курская Битва') }}" class="history-card">
+            <div class="card-content">
+                <h3>Курская Битва</h3>
+            </div>
+        </a>
+    </div>
+</div>
+{% endblock %}

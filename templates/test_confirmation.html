@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="test-confirmation-container">
+    <a href="{{ url_for('tests') }}" class="back-button">
+        <img src="{{ url_for('static', filename='images/back.png') }}" alt="Назад" class="back-icon">
+    </a>
+
+    {% if error %}
+    <div class="error-box">
+        <div class="error-icon">⚠️</div>
+        <div class="error-message">{{ error }}</div>
+        <a href="{{ url_for('tests') }}" class="error-back-button">Вернуться к тестам</a>
+    </div>
+    {% else %}
+    <div class="confirmation-box">
+        <h1 class="confirmation-title">Подтверждение теста</h1>
+
+        <div class="test-info-card">
+            <div class="info-item">
+                <span class="info-label">Тема:</span>
+                <span class="info-value">{{ topic }}</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Количество вопросов:</span>
+                <span class="info-value">15</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Время на тест:</span>
+                <span class="info-value">5 минут</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Проходной балл:</span>
+                <span class="info-value">10/15</span>
+            </div>
+        </div>
+
+        <div class="rules-section">
+            <h3 class="rules-title">Правила тестирования:</h3>
+            <ul class="rules-list">
+                <li>Тест нельзя прервать после начала</li>
+                <li>На прохождение дается 5 минут</li>
+                <li>Результат сохраняется автоматически</li>
+                <li>Для успешного прохождения нужно ответить правильно на 10 вопросов</li>
+            </ul>
+        </div>
+
+        <form method="POST" class="confirmation-form">
+            <button type="submit" class="start-test-button">
+                <span class="button-text">Начать тест</span>
+                <span class="button-icon">🚀</span>
+            </button>
+        </form>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

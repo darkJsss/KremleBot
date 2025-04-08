@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="profile-container">
+    <a href="{{ url_for('index') }}" class="back-button">
+        <img src="{{ url_for('static', filename='images/back.png') }}" alt="Назад">
+    </a>
+    <h1>Профиль {{ username }}</h1>
+
+    <div class="results-section">
+        <h2>Ваши Результаты:</h2>
+        <div class="results-grid">
+            {% for result in results %}
+            <div class="result-item">
+                <h3>{{ result.topic }}</h3>
+                <p>{{ result.score }}/15 ({{ result.time }})</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="achievements-section">
+        <h2>Достижения</h2>
+        <div class="achievements-grid">
+            {% for achievement in achievements %}
+            <div class="achievement-item {% if not achievement.unlocked %}locked{% endif %}">
+                <div class="achievement-icon">
+                    {% if achievement.unlocked %}
+                    <span>{{ achievement.icon }}</span>
+                    {% else %}
+                    <span>🔒</span>
+                    {% endif %}
+                </div>
+                <div class="achievement-info">
+                    <h3>{{ achievement.title }}</h3>
+                    <p>{{ achievement.description }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

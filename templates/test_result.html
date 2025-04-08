@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="result-container">
+    <div class="result-box">
+        <h2>Результаты теста: {{ topic }}</h2>
+        
+        <div class="result-stats">
+            <div class="stat-item">
+                <span class="stat-label">Ваш результат:</span>
+                <span class="stat-value">{{ correct }}/{{ total }}</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">Затраченное время:</span>
+                <span class="stat-value">{{ elapsed_time }}/5:00</span>
+            </div>
+        </div>
+        
+        {% if is_new_record %}
+        <div class="new-record">Новый Рекорд!</div>
+        {% endif %}
+        
+        <div class="result-buttons">
+            <a href="{{ url_for('history_item', topic=topic) }}" class="result-button">
+                Перейти к теории
+            </a>
+            <a href="{{ url_for('index') }}" class="result-button">
+                В главное меню
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

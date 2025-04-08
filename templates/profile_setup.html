@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="profile-setup">
+    <div class="setup-box">
+        <h2>Введите Имя</h2>
+        <form method="POST" action="{{ url_for('profile') }}">
+            <input type="text" name="username" maxlength="10" required 
+                   pattern="[A-Za-zА-Яа-я0-9\s\-_]+" 
+                   title="Можно использовать буквы, цифры и некоторые спецсимволы">
+            <button type="submit" class="save-button">Сохранить</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

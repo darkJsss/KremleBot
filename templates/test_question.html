@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="test-question-container">
+    <div class="test-header">
+        <div class="test-timer">
+            <span class="timer-icon">⏱️</span>
+            <span id="timer">{{ remaining_time|int // 60 }}:{{ "%02d" % (remaining_time|int % 60) }}</span>
+        </div>
+        <div class="test-progress">
+            Вопрос {{ current }}/{{ total }}
+        </div>
+    </div>
+
+    <div class="question-box">
+        <h3 class="question-text">{{ question.text }}</h3>
+
+        <form method="POST" class="options-form">
+            {% for option in question.options %}
+            <label class="option">
+                <input type="radio" name="answer" value="{{ loop.index0 }}" required>
+                <span class="option-text">{{ option }}</span>
+            </label>
+            {% endfor %}
+
+            <button type="submit" class="submit-button">Ответить</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    // Таймер обратного отсчета
+    let secondsLeft = {{ remaining_time|int }};
+
+    function updateTimer() {
+        secondsLeft--;
+        if (secondsLeft <= 0) {
+            window.location.href = "{{ url_for('test_result') }}";
+            return;
+        }
+
+        const minutes = Math.floor(secondsLeft / 60);
+        const seconds = secondsLeft % 60;
+        document.getElementById('timer').textContent =
+            `${minutes}:${seconds.toString().padStart(2, '0')}`;
+    }
+
+    setInterval(updateTimer, 1000);
+</script>
+{% endblock %}

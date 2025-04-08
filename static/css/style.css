@@ -1,0 +1,795 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+body {
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    position: relative;
+}
+
+.background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('../images/80ЛетПобеды.png');
+    background-size: cover;
+    background-position: center;
+    opacity: 0.2;
+    z-index: -1;
+}
+
+.container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.main-menu {
+    width: 100%;
+    max-width: 500px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.top-banner {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 30px;
+}
+
+.square-button {
+    width: 80px;
+    height: 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #ff8c00, #ff4500);
+    color: white;
+    border-radius: 15px;
+    text-decoration: none;
+    font-weight: bold;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s;
+}
+
+.square-button:hover {
+    transform: scale(1.05);
+}
+
+.square-button .icon {
+    font-size: 24px;
+    margin-bottom: 5px;
+}
+
+.app-title {
+    margin: 20px 0;
+}
+
+.app-title h1 {
+    font-size: 32px;
+    color: #333;
+    text-align: center;
+}
+
+.main-buttons {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 20px;
+    margin: 30px 0;
+}
+
+.big-button {
+    display: block;
+    padding: 20px;
+    background: linear-gradient(135deg, #ff8c00, #ff4500);
+    color: white;
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    border-radius: 15px;
+    text-decoration: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s;
+}
+
+.big-button:hover {
+    transform: scale(1.03);
+}
+
+.bottom-button {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+/* Адаптация для мобильных устройств */
+@media (max-width: 480px) {
+    .main-menu {
+        padding: 15px;
+    }
+
+    .square-button {
+        width: 70px;
+        height: 70px;
+        font-size: 14px;
+    }
+
+    .big-button {
+        font-size: 20px;
+        padding: 15px;
+    }
+}
+
+/* История */
+.history-container, .tests-container {
+    padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.history-title, .tests-title {
+    color: #ff4500;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.history-grid, .tests-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.history-card, .test-card {
+    background: linear-gradient(135deg, #ff8c00, #ff4500);
+    color: white;
+    border-radius: 15px;
+    padding: 20px;
+    text-decoration: none;
+    transition: transform 0.3s;
+    height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.history-card:hover, .test-card:hover {
+    transform: scale(1.03);
+}
+
+.card-content h3 {
+    font-size: 20px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+/* Страница события */
+.event-container {
+    padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.back-button {
+    color: #ff4500;
+    text-decoration: none;
+    font-size: 18px;
+    display: inline-block;
+    margin-bottom: 20px;
+}
+
+.event-title {
+    color: #ff4500;
+    margin-bottom: 20px;
+}
+
+.event-content {
+    line-height: 1.6;
+    margin-bottom: 30px;
+}
+
+/* Подтверждение теста */
+.confirmation-box {
+    background: white;
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    text-align: center;
+    margin-top: 50px;
+}
+
+.start-button {
+    background: linear-gradient(135deg, #ff8c00, #ff4500);
+    color: white;
+    border: none;
+    padding: 15px 40px;
+    border-radius: 30px;
+    font-size: 18px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+/* Страница вопроса */
+.question-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 30px;
+}
+
+.timer, .progress {
+    font-size: 18px;
+    font-weight: bold;
+    color: #ff4500;
+}
+
+.options-form {
+    margin-top: 30px;
+}
+
+.option {
+    display: block;
+    margin-bottom: 15px;
+    padding: 15px;
+    background: #f5f5f5;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.submit-button {
+    background: linear-gradient(135deg, #ff8c00, #ff4500);
+    color: white;
+    border: none;
+    padding: 15px 40px;
+    border-radius: 30px;
+    font-size: 18px;
+    cursor: pointer;
+    margin-top: 30px;
+    width: 100%;
+}
+
+/* Настройка профиля */
+.profile-setup {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    padding: 20px;
+}
+
+.setup-box {
+    background: white;
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    text-align: center;
+    max-width: 400px;
+    width: 100%;
+}
+
+.setup-box input {
+    width: 100%;
+    padding: 15px;
+    margin: 20px 0;
+    border: 2px solid #ff8c00;
+    border-radius: 10px;
+    font-size: 16px;
+}
+
+.save-button {
+    background: linear-gradient(135deg, #ff8c00, #ff4500);
+    color: white;
+    border: none;
+    padding: 15px 40px;
+    border-radius: 30px;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+/* Профиль */
+.profile-container {
+    padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.results-section, .achievements-section {
+    margin-bottom: 40px;
+}
+
+.results-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.result-item {
+    background: #f9f9f9;
+    border-radius: 15px;
+    padding: 15px;
+    border-left: 5px solid #ff8c00;
+}
+
+.achievements-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.achievement-item {
+    display: flex;
+    background: #f9f9f9;
+    border-radius: 15px;
+    padding: 15px;
+    align-items: center;
+}
+
+.achievement-item.locked {
+    opacity: 0.6;
+    background: #eee;
+}
+
+.achievement-icon {
+    font-size: 30px;
+    margin-right: 15px;
+    min-width: 40px;
+    text-align: center;
+}
+
+.achievement-info h3 {
+    color: #ff4500;
+    margin-bottom: 5px;
+}
+
+/* О приложении */
+.about-container {
+    padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.about-content {
+    background: white;
+    border-radius: 20px;
+    padding: 30px;
+    margin: 20px 0;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.about-content h2 {
+    color: #ff4500;
+    margin: 20px 0 10px;
+}
+
+.back-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background: #ff8c00;
+    color: white;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+/* Кнопка назад */
+.back-button {
+    display: inline-block;
+    margin-bottom: 20px;
+}
+
+.back-button img {
+    width: 30px;
+    height: 30px;
+}
+
+/* Результаты теста */
+.result-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    padding: 20px;
+}
+
+.result-box {
+    background: white;
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    text-align: center;
+    max-width: 500px;
+    width: 100%;
+}
+
+.result-stats {
+    margin: 30px 0;
+}
+
+.stat-item {
+    margin: 15px 0;
+    display: flex;
+    justify-content: space-between;
+    max-width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.stat-label {
+    font-weight: bold;
+}
+
+.stat-value {
+    color: #ff4500;
+}
+
+.new-record {
+    color: #ff4500;
+    font-weight: bold;
+    font-size: 20px;
+    margin: 20px 0;
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+.result-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.result-button {
+    background: linear-gradient(135deg, #ff8c00, #ff4500);
+    color: white;
+    border: none;
+    padding: 15px;
+    border-radius: 30px;
+    font-size: 16px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+/* Листание теории */
+.event-content {
+    max-height: 60vh;
+    overflow-y: auto;
+    margin-bottom: 20px;
+    padding: 10px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: inset 0 0 5px rgba(0,0,0,0.1);
+}
+
+.scroll-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.scroll-button {
+    background: #ff8c00;
+    color: white;
+    border: none;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Контейнер вопроса */
+.test-question-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Шапка теста */
+.test-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 30px;
+    background: linear-gradient(135deg, #ff8c00, #ff4500);
+    color: white;
+    padding: 15px;
+    border-radius: 10px;
+}
+
+.test-timer, .test-progress {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.timer-icon {
+    font-size: 20px;
+}
+
+/* Блок вопроса */
+.question-box {
+    background: white;
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.question-text {
+    margin-bottom: 25px;
+    color: #333;
+}
+
+/* Варианты ответов */
+.options-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.option {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    background: #f5f5f5;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.option:hover {
+    background: #eee;
+}
+
+.option input {
+    margin-right: 15px;
+}
+
+.option-text {
+    flex: 1;
+}
+
+/* Кнопка отправки */
+.submit-button {
+    background: linear-gradient(135deg, #ff8c00, #ff4500);
+    color: white;
+    border: none;
+    padding: 15px;
+    border-radius: 10px;
+    font-size: 18px;
+    cursor: pointer;
+    margin-top: 20px;
+    width: 100%;
+}
+
+/* Подтверждение теста */
+.confirmation-box {
+    background: white;
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    margin-top: 30px;
+}
+
+.test-info {
+    margin: 25px 0;
+    line-height: 1.6;
+}
+
+.start-button {
+    background: linear-gradient(135deg, #ff8c00, #ff4500);
+    color: white;
+    border: none;
+    padding: 15px 40px;
+    border-radius: 30px;
+    font-size: 18px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 20px;
+}
+
+/* Контейнер подтверждения теста */
+.test-confirmation-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Кнопка назад */
+.back-button {
+    display: inline-block;
+    margin-bottom: 20px;
+    transition: transform 0.2s;
+}
+
+.back-button:hover {
+    transform: translateX(-5px);
+}
+
+.back-icon {
+    width: 30px;
+    height: 30px;
+}
+
+/* Блок с ошибкой */
+.error-box {
+    background: #fff0f0;
+    border: 2px solid #ff6b6b;
+    border-radius: 15px;
+    padding: 25px;
+    text-align: center;
+    margin-top: 30px;
+}
+
+.error-icon {
+    font-size: 40px;
+    margin-bottom: 15px;
+    color: #ff6b6b;
+}
+
+.error-message {
+    font-size: 18px;
+    margin-bottom: 20px;
+    color: #d33;
+}
+
+.error-back-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background: #ff6b6b;
+    color: white;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background 0.2s;
+}
+
+.error-back-button:hover {
+    background: #e05555;
+}
+
+/* Основной блок подтверждения */
+.confirmation-box {
+    background: white;
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    margin-top: 20px;
+}
+
+.confirmation-title {
+    color: #ff4500;
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 28px;
+}
+
+/* Карточка с информацией о тесте */
+.test-info-card {
+    background: #f9f9f9;
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 30px;
+    border-left: 5px solid #ff8c00;
+}
+
+.info-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px dashed #ddd;
+}
+
+.info-item:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.info-label {
+    font-weight: bold;
+    color: #555;
+}
+
+.info-value {
+    color: #ff4500;
+    font-weight: bold;
+}
+
+/* Секция с правилами */
+.rules-section {
+    margin-bottom: 30px;
+}
+
+.rules-title {
+    color: #ff8c00;
+    margin-bottom: 15px;
+    font-size: 20px;
+}
+
+.rules-list {
+    padding-left: 20px;
+}
+
+.rules-list li {
+    margin-bottom: 10px;
+    line-height: 1.5;
+}
+
+/* Кнопка начала теста */
+.start-test-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 18px;
+    background: linear-gradient(135deg, #ff8c00, #ff4500);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.start-test-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(255, 69, 0, 0.3);
+}
+
+.button-text {
+    margin-right: 10px;
+}
+
+.button-icon {
+    font-size: 24px;
+}
+
+/* Адаптация для мобильных */
+@media (max-width: 480px) {
+    .test-confirmation-container {
+        padding: 15px;
+    }
+
+    .confirmation-box {
+        padding: 20px;
+    }
+
+    .confirmation-title {
+        font-size: 24px;
+    }
+
+    .start-test-button {
+        padding: 15px;
+        font-size: 18px;
+    }
+}

@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="back-button"><a href="{{ url_for('tests') }}">Назад</a></div>
+<h1>Результаты</h1>
+<div class="result-container">
+    <p>Ваш результат: {{ result }}/15</p>
+    <p>Затраченное время: {{ time_spent }}/5:00</p>
+    {% if new_record %}
+    <p><strong>Новый рекорд!</strong></p>
+    {% endif %}
+</div>
+<div class="buttons">
+    <a href="{{ url_for('history') }}" class="button">Перейти к теории</a>
+    <a href="{{ url_for('index') }}" class="button">В главное меню</a>
+</div>
+{% endblock %}
