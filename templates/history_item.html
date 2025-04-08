@@ -2,25 +2,72 @@
 
 {% block content %}
 <div class="theory-container">
+    <!-- Кнопка назад -->
     <a href="{{ url_for('history') }}" class="back-button">
         <img src="{{ url_for('static', filename='images/back.png') }}" alt="Назад">
     </a>
 
+    <!-- Заголовок -->
     <h1 class="theory-heading">{{ topic }}</h1>
 
-    <div class="theory-content">
-        {{ content|safe }}
+    <!-- Основной контейнер с текстом -->
+    <div class="theory-scroll-container" id="scroll-container">
+        <div class="theory-content">
+            {{ content|safe }}
+        </div>
     </div>
 
-    <div class="theory-navigation">
-        <button id="scroll-up" class="nav-button">↑ Наверх</button>
+    <!-- Кнопки навигации -->
+    <div class="scroll-controls">
+        <button class="scroll-button scroll-up" id="scroll-up">
+            <img src="{{ url_for('static', filename='images/arrow-up.png') }}" alt="Вверх">
+        </button>
+        <button class="scroll-button scroll-down" id="scroll-down">
+            <img src="{{ url_for('static', filename='images/arrow-down.png') }}" alt="Вниз">
+        </button>
     </div>
 </div>
 
 <script>
-    // Плавная прокрутка вверх
-    document.getElementById('scroll-up').addEventListener('click', () => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+document.addEventListener('DOMContentLoaded', function() {
+    const container = document.getElementById('scroll-container');
+    const scrollUpBtn = document.getElementById('scroll-up');
+    const scrollDownBtn = document.getElementById('scroll-down');
+    const scrollStep = 100; // Шаг скролла в пикселях
+
+    // Плавный скролл вверх
+    scrollUpBtn.addEventListener('click', function() {
+        smoothScroll(container, -scrollStep);
     });
+
+    // Плавный скролл вниз
+    scrollDownBtn.addEventListener('click', function() {
+        smoothScroll(container, scrollStep);
+    });
+
+    // Скрываем/показываем кнопки при скролле
+    container.addEventListener('scroll', function() {
+        toggleScrollButtons();
+    });
+
+    // Инициализация кнопок
+    toggleScrollButtons();
+
+    // Функция плавного скролла
+    function smoothScroll(element, step) {
+        element.scrollBy({
+            top: step,
+            behavior: 'smooth'
+        });
+    }
+
+    // Показываем/скрываем кнопки в зависимости от положения
+    function toggleScrollButtons() {
+        scrollUpBtn.style.display = container.scrollTop > 0 ? 'block' : 'none';
+        scrollDownBtn.style.display =
+            container.scrollTop + container.clientHeight < container.scrollHeight ?
+            'block' : 'none';
+    }
+});
 </script>
 {% endblock %}

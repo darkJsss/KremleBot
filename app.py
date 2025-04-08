@@ -42,6 +42,7 @@ for topic, filename in list(THEORY_FILES.items()):
         print(f"Warning: Theory file not found - {filepath}. Removing topic {topic}.")
         THEORY_FILES.pop(topic)
 
+
 # Модели
 class User(db.Model):
     __tablename__ = 'users'
@@ -58,6 +59,7 @@ class TestResult(db.Model):
     score = db.Column(db.Integer, nullable=False)
     time = db.Column(db.String(10), nullable=False)
     user = db.relationship('User', back_populates='test_results')
+
 
 class UserRating(db.Model):
     __tablename__ = 'user_ratings'
@@ -148,6 +150,8 @@ def load_questions(topic):
     except Exception as e:
         print(f"Error loading questions from {filepath}: {str(e)}")
         return []
+
+
 # Роуты
 @app.route('/')
 def index():
@@ -167,10 +171,14 @@ def history_item(topic):
             content = f.read()
 
             # Обработка абзацев
-            paragraphs = [p.strip() for p in content.split('\n\n') if p.strip()]
+            paragraphs = [p.strip()  for p in content.split('\n\n') if p.strip()]
             formatted_content = ""
 
             for p in paragraphs:
+                import re
+                # В цикле обработки абзацев
+                p = re.sub(r'(\d{1,2} [а-я]+ \d{4} года)', r'<span class="theory-date">\1</span>', p)
+
                 # Сохраняем подзаголовки (строки с :)
                 if ':' in p and len(p.split(':')[0]) < 30:
                     title, text = p.split(':', 1)
