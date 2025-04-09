@@ -236,9 +236,10 @@ def rating():
 
 
 # Обновляем рейтинг после завершения теста (добавьте в test_result)
-def update_rating(user_id, score):
-    with db.session.begin():
-        # Получаем или создаем рейтинг
+def update_rating(user_id, correct_answers):
+    """Обновляет общий рейтинг пользователя"""
+    try:
+        # Находим или создаем запись рейтинга
         rating = db.session.execute(
             select(UserRating)
             .where(UserRating.user_id == user_id)
@@ -252,10 +253,14 @@ def update_rating(user_id, score):
             )
             db.session.add(rating)
 
-        # Обновляем значения (гарантируем, что не None)
-        rating.total_score = (rating.total_score or 0) + score
-        rating.tests_completed = (rating.tests_completed or 0) + 1
+        # Обновляем значения
+        rating.total_score += correct_answers
+        rating.tests_completed += 1
         rating.last_activity = datetime.utcnow()
+
+    except Exception as e:
+        print(f"Error updating rating: {e}")
+        raise
 
 
 @app.route('/tests')
@@ -339,6 +344,7 @@ def test_result():
         return redirect(url_for('tests'))
 
     test_data = session['test_data']
+    topic = test_data['topic']
 
     # Подсчет правильных ответов
     correct = sum(
@@ -346,24 +352,53 @@ def test_result():
         if i < len(test_data['questions']) and
         answer == test_data['questions'][i]['correct']
     )
-    is_new_record = False
+
     # Расчет времени
     elapsed = (datetime.now() - datetime.fromisoformat(test_data['start_time'])).total_seconds()
     elapsed_time = str(timedelta(seconds=int(elapsed)))[2:]  # MM:SS
 
-    # Обновление рейтинга
+    # Сохранение результатов теста
+    is_new_record = False
     if 'user_id' in session:
         try:
-            update_rating(session['user_id'], correct * 1)  # 10 очков за правильный ответ
+            user_id = session['user_id']
+
+            # 1. Сохраняем результат теста
+            existing_result = db.session.execute(
+                select(TestResult)
+                .where(TestResult.user_id == user_id)
+                .where(TestResult.topic == topic)
+            ).scalar_one_or_none()
+
+            if existing_result:
+                if correct > existing_result.score:
+                    existing_result.score = correct
+                    existing_result.time = elapsed_time
+                    is_new_record = True
+            else:
+                new_result = TestResult(
+                    user_id=user_id,
+                    topic=topic,
+                    score=correct,
+                    time=elapsed_time
+                )
+                db.session.add(new_result)
+                is_new_record = True
+
+            # 2. Обновляем общий рейтинг
+            update_rating(user_id, correct)
+
+            db.session.commit()
+
         except Exception as e:
-            print(f"Error updating rating: {e}")
-            # Продолжаем даже если ошибка обновления рейтинга
+            db.session.rollback()
+            print(f"Error saving test results: {e}")
 
     # Очистка сессии теста
     session.pop('test_data', None)
 
     return render_template('test_result.html',
-                           topic=test_data['topic'],
+                           topic=topic,
                            correct=correct,
                            total=len(test_data['questions']),
                            elapsed_time=elapsed_time,
