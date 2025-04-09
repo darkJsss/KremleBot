@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="achievements-popup">
+    <div class="achievements-container">
+        <h1>Новые достижения!</h1>
+        
+        <div class="achievements-list">
+            {% for achievement in achievements %}
+            <div class="achievement unlocked">
+                <div class="achievement-icon">{{ achievement.icon }}</div>
+                <div class="achievement-content">
+                    <h2>{{ achievement.title }}</h2>
+                    <p>{{ achievement.description }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <a href="{{ url_for('profile') }}" class="continue-button">Продолжить</a>
+    </div>
+</div>
+{% endblock %}

@@ -1655,3 +1655,80 @@ body {
         height: 36px;
     }
 }
+
+.achievements-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.achievements-container {
+    background: white;
+    border-radius: 15px;
+    padding: 25px;
+    width: 90%;
+    max-width: 500px;
+    text-align: center;
+}
+
+.achievements-container h1 {
+    color: #ff4500;
+    margin-bottom: 20px;
+}
+
+.achievements-list {
+    margin: 20px 0;
+}
+
+.achievement {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    margin-bottom: 15px;
+    background: #fff9e6;
+    border-radius: 10px;
+    border-left: 4px solid #ff8c00;
+}
+
+.achievement-icon {
+    font-size: 30px;
+    margin-right: 15px;
+    width: 50px;
+}
+
+.achievement-content h2 {
+    margin: 0;
+    color: #333;
+    text-align: left;
+}
+
+.achievement-content p {
+    margin: 5px 0 0;
+    color: #666;
+    text-align: left;
+}
+
+.continue-button {
+    display: inline-block;
+    padding: 12px 30px;
+    background: linear-gradient(to right, #ff8c00, #ff4500);
+    color: white;
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: bold;
+    margin-top: 20px;
+}
+
+<div class="achievements-header">
+    <h2><i class="fas fa-trophy"></i> Достижения</h2>
+    <div class="achievements-count">
+        {{ achievements|selectattr('unlocked')|list|length }}/{{ achievements|length }}
+    </div>
+</div>

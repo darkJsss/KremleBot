@@ -34,26 +34,10 @@
         <!-- Достижения -->
         <div class="achievements-card">
             <h2>Достижения</h2>
-
-            <div class="achievements-grid">
-                {% for achievement in achievements %}
-                <div class="achievement-item {% if not achievement.unlocked %}locked{% endif %}">
-                    <div class="achievement-icon">
-                        {% if achievement.unlocked %}
-                        {{ achievement.icon }}
-                        {% else %}
-                        🔒
-                        {% endif %}
-                    </div>
-                    <div class="achievement-info">
-                        <h3>{{ achievement.title }}</h3>
-                        <p>{{ achievement.description }}</p>
-                    </div>
-                    {% if achievement.unlocked %}
-                    <div class="achievement-badge">✔️</div>
-                    {% endif %}
+            <div class="achievements-header">
+                <div class="achievements-count">
+                    {{ achievements|selectattr('unlocked')|list|length }}/{{ achievements|length }}
                 </div>
-                {% endfor %}
             </div>
         </div>
     </div>

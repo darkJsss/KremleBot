@@ -397,6 +397,14 @@ def test_result():
     # Очистка сессии теста
     session.pop('test_data', None)
 
+    if 'user_id' in session:
+        achievements = check_achievements(session['user_id'])
+        new_achievements = [a for a in achievements if a['unlocked']]
+
+        if new_achievements:
+            session['new_achievements'] = new_achievements
+            return redirect(url_for('show_achievements'))
+
     return render_template('test_result.html',
                            topic=topic,
                            correct=correct,
@@ -466,6 +474,83 @@ def profile():
                            username=user.username,
                            results=results,
                            achievements=achievements)
+
+
+def check_achievements(user_id):
+    """Проверяет и возвращает все достижения пользователя"""
+    # Получаем все результаты тестов пользователя
+    test_results = db.session.execute(
+        select(TestResult)
+        .where(TestResult.user_id == user_id)
+    ).scalars().all()
+
+    # Конвертируем в словарь для удобства
+    results_dict = {r.topic: r for r in test_results}
+
+    # Проверяем условия для каждого достижения
+    achievements = [
+        {
+            'title': 'Первый шаг',
+            'description': 'Пройдите любой тест',
+            'unlocked': len(test_results) > 0,
+            'icon': '🚀'
+        },
+        {
+            'title': 'Отличник',
+            'description': 'Наберите 15/15 в любом тесте',
+            'unlocked': any(r.score == 15 for r in test_results),
+            'icon': '⭐'
+        },
+        {
+            'title': 'Профи',
+            'description': 'Пройдите все тесты',
+            'unlocked': len(test_results) >= 4,  # 4 - количество тем тестов
+            'icon': '🏆'
+        },
+        {
+            'title': 'Скорострел',
+            'description': 'Пройдите тест быстрее 2 минут',
+            'unlocked': any(convert_time_to_seconds(r.time) < 120 for r in test_results),
+            'icon': '⏱️'
+        },
+        {
+            'title': 'Историк',
+            'description': 'Наберите 10+ баллов во всех тестах',
+            'unlocked': len(test_results) >= 4 and all(r.score >= 10 for r in test_results),
+            'icon': '📚'
+        },
+        {
+            'title': 'Мастер',
+            'description': 'Наберите 15/15 во всех тестах',
+            'unlocked': len(test_results) >= 4 and all(r.score == 15 for r in test_results),
+            'icon': '👑'
+        },
+        {
+            'title': 'Стратег',
+            'description': 'Пройдите тест с первой попытки на максимум',
+            'unlocked': any(r.score == 15 and r.time < '3:00' for r in test_results),
+            'icon': '🎯'
+        }
+    ]
+
+    return achievements
+
+
+def convert_time_to_seconds(time_str):
+    """Конвертирует время в формате MM:SS в секунды"""
+    if not time_str or time_str == '0:00':
+        return float('inf')
+    minutes, seconds = map(int, time_str.split(':'))
+    return minutes * 60 + seconds
+
+
+@app.route('/achievements')
+def show_achievements():
+    if 'new_achievements' not in session or 'user_id' not in session:
+        return redirect(url_for('profile'))
+
+    achievements = session.pop('new_achievements')
+    return render_template('achievements.html', achievements=achievements)
 
 
 @app.route('/about')
